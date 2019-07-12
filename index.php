@@ -1,5 +1,21 @@
 <?php
+/*~ Greco395 Simple Url Shorter
+.---------------------------------------------------------------------------.
+|  Software: Simple Url Shorter                                             |
+|   Version: 0.9.1                                                          |
+|      Site: https://greco395.com/                                          |
+| ------------------------------------------------------------------------- |
+|    Author: Greco Domenico (project admininistrator & Author)              |
+|   Founder: Greco395.com                                                   |
+| ------------------------------------------------------------------------- |
+| This program is distributed in the hope that it will be useful - WITHOUT  |
+| ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or     |
+| FITNESS FOR A PARTICULAR PURPOSE.                                         |
+'---------------------------------------------------------------------------'
+*/
 
+// Website Name
+$website_name = "http://example.com/";
 
 // Database configuration
 $dbHost     = "db_host";
@@ -16,11 +32,15 @@ try{
 
 
 class URL_SHORTER{
-    public $domain = "https://shortflow.ga/";
+    public $domain;
     protected static $chars = "abcdfghjkmnpqrstvwxyz|ABCDFGHJKLMNPQRSTVWXYZ|0123456789";
     protected static $table = "short_urls";
     protected static $checkUrlExists = false;
     
+    public function __construct(){
+        global $website_name;
+        $this->domain = $website_name;
+    }
     public function validateUrl($url){
         return filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED);
     }
@@ -78,7 +98,16 @@ class URL_SHORTER{
         if(isset($long_url)){
             $isset_urlDB = self::urlExistsInDB($long_url);
             if($isset_urlDB != true){
-                return $this->domain.self::infoID(self::insertUrlInDB($long_url, self::generateRandomString(4)))['short_code'];
+                if(self::checkUrlExists == true){
+                    if($this->checkUrl($long_url) != true){
+                        return "INVALID WEBSITE";
+                    }
+                }
+                if($this->validateUrl($long_url)){
+                    return $this->domain.self::infoID(self::insertUrlInDB($long_url, self::generateRandomString(4)))['short_code'];
+                }else{
+                    return "INVALID URL";
+                }
             }else{
                 return $this->domain.$isset_urlDB;
             }
@@ -88,4 +117,6 @@ class URL_SHORTER{
 }
 $shorty = new URL_SHORTER;
 
-var_dump($shorty->shortize("https://greco395.com"));
+// EXAMPLE
+//  echo $shorty->shortize("https://greco395.com");
+//
