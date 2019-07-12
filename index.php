@@ -117,6 +117,23 @@ class URL_SHORTER{
 }
 $shorty = new URL_SHORTER;
 
+// REDIRECT SHORT URL TO LONG URL
+if(isset($_GET) && !isset($_GET['new'])){
+    foreach($_GET as $rq){
+        if(strlen($rq) < 5 && strlen($rq) > 3){
+            header("Location: ".$shorty->infoCODE($rq)['long_url']."");
+        }
+    }
+}
+
+
+
 // EXAMPLE
 //  echo $shorty->shortize("https://greco395.com");
 //
+
+
+
+
+
+
