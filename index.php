@@ -14,7 +14,9 @@
 '---------------------------------------------------------------------------'
 */
 
-// Website Name
+//////// CHANGE THE FOLLOWING VARIABLES /////////
+
+// Website URL ( add the "/" at the end )
 $website_name = "http://example.com/";
 
 // Database configuration
@@ -22,6 +24,9 @@ $dbHost     = "db_host";
 $dbUsername = "db_user";
 $dbPassword = "db_pass";
 $dbName     = "db_name";
+
+////////////////////////////////////////////////
+
 
 // Create database connection
 try{
@@ -42,6 +47,9 @@ class URL_SHORTER{
         $this->domain = $website_name;
     }
     public function validateUrl($url){
+        if (strpos($url, $this->domain) !== false) {
+    		return false;
+		}
         return filter_var($url, FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED);
     }
     public function checkUrl($url){
